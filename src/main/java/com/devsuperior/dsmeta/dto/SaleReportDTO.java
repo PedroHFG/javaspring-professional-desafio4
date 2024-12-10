@@ -48,13 +48,4 @@ public class SaleReportDTO {
         return seller;
     }
 
-    @Override
-    public String toString() {
-        return "SaleReportDTO{" +
-                "id=" + id +
-                ", date=" + date +
-                ", amount=" + amount +
-                ", seller=" + seller +
-                '}';
-    }
 }

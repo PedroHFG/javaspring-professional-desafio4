@@ -5,12 +5,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.devsuperior.dsmeta.dto.SaleReportDTO;
+import com.devsuperior.dsmeta.dto.SaleSummaryDTO;
 import com.devsuperior.dsmeta.projections.SaleReportProjection;
+import com.devsuperior.dsmeta.projections.SaleSummaryProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +40,17 @@ public class SaleService {
 		String maxDateStr = datesArray[1];
 
 		Page<SaleReportProjection> list = repository.getReport(name, minDateStr, maxDateStr, pageable);
-//		List<SaleReportDTO> result = list.stream().map(x -> new SaleReportDTO(x)).collect(Collectors.toList());
 		return list.map(x -> new SaleReportDTO(x));
+	}
+
+	public List<SaleSummaryDTO> getSummary(String minDate, String maxDate) {
+		String[] datesArray = processDateRange(minDate, maxDate);
+		String minDateStr = datesArray[0];
+		String maxDateStr = datesArray[1];
+
+		List<SaleSummaryProjection> list = repository.getSummary(minDateStr, maxDateStr);
+		List<SaleSummaryDTO> result = list.stream().map(x -> new SaleSummaryDTO(x)).collect(Collectors.toList());
+		return result;
 	}
 
 	public static String[] processDateRange(String minDate, String maxDate) {
